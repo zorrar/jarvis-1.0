@@ -90,19 +90,13 @@ void s2u(const char *msg)
 void IRC_Identify()
 {
 	s2u("NICK JarvisBot\r\n");
-
 	s2u("LOCALHOST 192.168.1.1");
-
 	s2u("USER JarvisBot 0 0:JarvisBot\r\n");
-
 	s2u("PASS JarvisPW123");
 
 	s2u("PRIVMSG NickServ register JarvisPW123\r\n");
-
 	s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
-
 	s2u("JOIN #ircbottesting\r\n");
-
 	s2u("PRIVMSG #ircbottesting : Hello\r\n");
 }
 
@@ -143,8 +137,6 @@ void irc_parse(string buffer)
 	{
 		buffer.erase(buffer.length()-2);
 	}
-	//ping_parse(buffer);
-	//bot_functions(buffer);
 }
 
 //Programm Start
