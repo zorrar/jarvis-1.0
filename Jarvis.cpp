@@ -34,6 +34,21 @@ int sockfd;
 void IRC_Disconnect()
 {
 	printf("Disconnect...");
+	#ifdef WIN32
+	{
+		//Windows-SOcket freigeben
+		closesocket(sockfd);
+		WSACleanup();
+		printf("Disconnected");
+		exit(1);
+	}
+	#else
+	{
+		close(sockfd);
+		printf("Disconnected");
+		exit(1);
+	}
+	#endif
 }
 
 //IRC Verbinden
@@ -89,15 +104,13 @@ void s2u(const char *msg)
 //IRC Identifizieren
 void IRC_Identify()
 {
-	s2u("NICK JarvisBot\r\n");
-	s2u("LOCALHOST 192.168.1.1");
-	s2u("USER JarvisBot 0 0:JarvisBot\r\n");
-	s2u("PASS JarvisPW123");
-
+	s2u("NICK Jarvis01\r\n");
 	s2u("PRIVMSG NickServ register JarvisPW123\r\n");
-	s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
-	s2u("JOIN #ircbottesting\r\n");
-	s2u("PRIVMSG #ircbottesting : Hello\r\n");
+	s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");	
+	s2u("LOCALHOST 192.168.1.1");
+	//s2u("SERVER ircnet.eversible.com");
+	s2u("USER Jarvis01 0 0:Jarvis01\r\n");
+	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
 }
 
 //Nachricht senden
@@ -108,9 +121,15 @@ void SendMsg()
 
 //IRC Still Connected Test -> IRCSCT
 //IRC-Server Verbindungs Test
-void IRCSCT()
+void IRCSCT(string &buffer)
 {
-
+	size_t pingPos = buffer.find("PING");
+	if(pingPos != string::npos)
+	{
+		string pong("PONG"+buffer.substr(pingPos+4)+"\r\n");
+		printf("pong");
+		s2u(pong.c_str());
+	}
 }
 
 //Nachrichten Empfangen
@@ -122,7 +141,8 @@ void GetMsg()
 //Channel betrette
 void ChannelConnect()
 {
-
+	s2u("JOIN #ircbottesting\r\n");
+	s2u("PRIVMSG #ircbottesting : Hello\r\n");
 }
 
 //BOT Funktionen
@@ -137,15 +157,25 @@ void irc_parse(string buffer)
 	{
 		buffer.erase(buffer.length()-2);
 	}
+	IRCSCT(buffer);
 }
 
 //Programm Start
 int main()
 {
+	//Verbindung herstellen
+	printf("IRC Connecting \n");	
 	IRC_Connect();
 	printf("IRC Connected \n");
+	
+	//Beim Server identifizieren
 	IRC_Identify();
-	printf("IRC Idnetify\n");
+	printf("IRC Identify \n");
+
+	//Channel betretten
+	printf("Enter Channel \n");
+	ChannelConnect();
+	printf("Channel Entered \n");
 
 	for(;;)
 	{
