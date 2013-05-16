@@ -20,8 +20,8 @@ using namespace std;
 
 //Konstanten
 const unsigned int iMaxLine = 1024;
-const int iPort = 6668;
-const char *cHost = "irc.atw-inter.net";
+const int iPort = 6667;//6668;
+const char *cHost = "localhost"; //"irc.atw-inter.net";
 
 //Globale Variablen
 #ifdef WIN32
@@ -104,12 +104,12 @@ void s2u(const char *msg)
 //IRC Identifizieren
 void IRC_Identify()
 {
-	s2u("NICK Jarvis01\r\n");
-	s2u("PRIVMSG NickServ register JarvisPW123\r\n");
-	s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");	
+	s2u("NICK Jarvis_MK04\r\n");
+	//s2u("PRIVMSG NickServ register JarvisPW123\r\n");
+	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");	
 	s2u("LOCALHOST 192.168.1.1");
 	//s2u("SERVER ircnet.eversible.com");
-	s2u("USER Jarvis01 0 0:Jarvis01\r\n");
+	s2u("USER Jarvis 0 0:Jarvis\r\n");
 	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
 }
 
@@ -141,8 +141,11 @@ void GetMsg()
 //Channel betrette
 void ChannelConnect()
 {
-	s2u("JOIN #ircbottesting\r\n");
+	//sleep(3);
+	printf("Entering...\r\n");
+	s2u("join #ircbottesting");
 	s2u("PRIVMSG #ircbottesting : Hello\r\n");
+	//s2u("#ircbottesting : Hello World\r\n");
 }
 
 //BOT Funktionen
@@ -176,9 +179,12 @@ int main()
 	printf("Enter Channel \n");
 	ChannelConnect();
 	printf("Channel Entered \n");
-
+	
+int itest =0;
 	for(;;)
 	{
+	
+	
 		char buffer[iMaxLine+1] = {0};
 		if(recv(sockfd, buffer, iMaxLine*sizeof(char), 0)<0)
 		{
@@ -188,6 +194,15 @@ int main()
 		}
 		cout << buffer;
 		irc_parse(buffer);
+	
+	if(itest == 0)
+	{
+		ChannelConnect();
+		printf("Channel Entered \n");
+		cout << itest;
+		itest++;
+	}
+	
 	}
 	IRC_Disconnect();
 	exit(1);
