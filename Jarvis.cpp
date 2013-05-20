@@ -20,8 +20,8 @@ using namespace std;
 
 //Konstanten
 const unsigned int iMaxLine = 1024;
-const int iPort = 6667;//6668;
-const char *cHost = "localhost";//"port80c.se.quakenet.org";
+const int iPort = 6667;
+const char *cHost = "PA.EnterTheGame.Com";
 
 //Globale Variablen
 #ifdef WIN32
@@ -105,32 +105,31 @@ void s2u(const char *msg)
 void ChannelConnect()
 {
 	//sleep(3);
-	printf("Entering...\r\n");
-	s2u("JOIN #ircbottesting");
-	s2u("PRIVMSG #ircbottesting : Hello\r\n");
-	//s2u("#ircbottesting : Hello World\r\n");
+	printf("Channel Entering...\r\n");
+	s2u("JOIN #ircbottesting\r\n");
+	s2u("NOTICE #ircbottesting THE_BOT_JarvisMK1_HAS_JOINED_THE_CHANNEL!\r\n");
+	s2u("PRIVMSG Zorrar Hello_here_I_am\r\n");
+	s2u("PRIVMSG #ircbottesting Hello_I_am_a_Bot_in_testing\r\n");
+	printf("Channel Entered\r\n");
 }
 
 //IRC Identifizieren
 void IRC_Identify()
 {
 	s2u("NICK JarvisMK1\r\n");
-	//s2u("LOCALHOST);// 192.168.1.1");
 	s2u("USER Jarvis 0 * :JarvisMK1Bot\r\n");
+	//s2u("LOCALHOST");
+	s2u("PRIVMSG NickServ REGISTER\r\n");
+	s2u("PRIVMSG NickServ IDENTIFY\r\n");	
 	
-	//s2u("PRIVMSG NickServ register JarvisPW123\r\n");
-	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");	
-	
+	//printf("Waiting for 5 seconds to let the bot connect to the server\r\n");
+	//sleep(5);
+	//printf("Continue...\r\n");
+
 	//s2u("SERVER ircnet.eversible.com");
 	
 	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
-	ChannelConnect();
-}
-
-//Nachricht senden
-void SendMsg()
-{
-
+	//ChannelConnect();
 }
 
 //IRC Still Connected Test -> IRCSCT
@@ -147,20 +146,11 @@ void IRCSCT(const string &buffer)
 	}
 }
 
-//Nachrichten Empfangen
-void GetMsg()
-{
-
-}
 
 //BOT Funktionen
-void BotFunctions(const string &buffer)
+void BotFunctions(string buffer)
 {
-	size_t pos = 0;
-	if(( pos = buffer.find(":say "))!=string::npos)
-	{
-		s2u(("PRIVMSG #channel :" +buffer.substr(pos+5)+"\r\n").c_str());
-	}
+	s2u("PRIVMSG Zorrar Hello");
 }
 
 void irc_parse(string buffer)
@@ -181,19 +171,21 @@ int main()
 	IRC_Connect();
 	printf("IRC Connected \n");
 	
+	
+
 	//Beim Server identifizieren
-	IRC_Identify();
 	printf("IRC Identify \n");
+	IRC_Identify();
+	printf("IRC Identifed \n");
+
+	//char buffer2[iMaxLine+1] = {0};
+	//irc_parse(buffer2);
 
 	//Channel betretten
-	printf("Enter Channel \n");
 	ChannelConnect();
-	printf("Channel Entered \n");
 	
-int itest =0;
 	for(;;)
 	{
-	
 	
 		char buffer[iMaxLine+1] = {0};
 		if(recv(sockfd, buffer, iMaxLine*sizeof(char), 0)<0)
@@ -204,17 +196,7 @@ int itest =0;
 		}
 		cout << buffer;
 		irc_parse(buffer);
-	
-	ChannelConnect();
-	
-	if(itest == -1)
-	{
-		ChannelConnect();
-		printf("Channel Entered \n");
-		cout << itest;
-		itest++;
-	}
-	
+		
 	}
 	IRC_Disconnect();
 	exit(1);
