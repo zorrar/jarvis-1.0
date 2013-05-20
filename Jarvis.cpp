@@ -107,9 +107,9 @@ void ChannelConnect()
 	//sleep(3);
 	printf("Channel Entering...\r\n");
 	s2u("JOIN #ircbottesting\r\n");
-	s2u("NOTICE #ircbottesting THE_BOT_JarvisMK1_HAS_JOINED_THE_CHANNEL!\r\n");
-	s2u("PRIVMSG Zorrar Hello_here_I_am\r\n");
-	s2u("PRIVMSG #ircbottesting Hello_I_am_a_Bot_in_testing\r\n");
+	s2u("NOTICE #ircbottesting :THE BOT JarvisMK1 HAS JOINED THE CHANNEL!\r\n");
+	s2u("PRIVMSG Zorrar :Hello here I am\r\n");
+	s2u("PRIVMSG #ircbottesting :Hello I am a Bot in testing\r\n");
 	printf("Channel Entered\r\n");
 }
 
@@ -119,7 +119,7 @@ void IRC_Identify()
 	s2u("NICK JarvisMK1\r\n");
 	s2u("USER Jarvis 0 * :JarvisMK1Bot\r\n");
 	//s2u("LOCALHOST");
-	s2u("PRIVMSG NickServ REGISTER\r\n");
+	//s2u("PRIVMSG NickServ REGISTER\r\n");
 	s2u("PRIVMSG NickServ IDENTIFY\r\n");	
 	
 	//printf("Waiting for 5 seconds to let the bot connect to the server\r\n");
@@ -141,16 +141,41 @@ void IRCSCT(const string &buffer)
 	{
 		string pong("PONG"+buffer.substr(pingPos+4)+"\r\n");
 		//cout << pong\r\n;
-		printf("pong\r\n");
+		printf("PONG\r\n");
 		s2u(pong.c_str());
 	}
 }
 
+//Messages Incoming
+void GetMSG(const string &buffer)
+{
+	size_t MSG = buffer.find("#");//"BLUB\r\n\r\n\r\n";
+	//buffer.find("PRIVMSG");
+	if(MSG != string::npos)
+	{
+		printf("%lu\r\n", MSG);
+		int Value = MSG;
+		//string sMSG("%s",buffer);// buffer.substr(MSG+16) + "\r\n");
+		printf("BUFFER: ");
+		for(int i = MSG; i < buffer.length(); i++)
+		{
+			printf("%c", buffer[i]);
+		}
+		printf("\r\n");
+	}
+	//printf("%s", MSG.c_str());
+}
+
+//CHAT Loggen
+void LogChat()
+{
+	//s2u("LOG");
+}
 
 //BOT Funktionen
 void BotFunctions(string buffer)
 {
-	s2u("PRIVMSG Zorrar Hello");
+	s2u("PRIVMSG Zorrar :Hello");
 }
 
 void irc_parse(string buffer)
@@ -160,7 +185,32 @@ void irc_parse(string buffer)
 		buffer.erase(buffer.length()-2);
 	}
 	IRCSCT(buffer);
-	BotFunctions(buffer);
+	//BotFunctions(buffer);
+}
+
+//Get Input
+void Input()
+{
+	char cInput[256];
+	/*
+	while(scanf("%s", cInput) > cInput.length())
+	{
+		printf("%s\r\n", cInput);
+	}
+	*/
+/*
+	if(gets())
+	{
+		printf("KEY WAS PRESSED");
+	}
+*/	
+	/*
+	if(cInput == "exit" || cInput == "EXIT" || cInput == "Exit")
+	{
+		printf("Close Application\r\n");
+		exit(1);
+	}
+	*/
 }
 
 //Programm Start
@@ -184,6 +234,8 @@ int main()
 	//Channel betretten
 	ChannelConnect();
 	
+	LogChat();
+
 	for(;;)
 	{
 	
@@ -196,7 +248,8 @@ int main()
 		}
 		cout << buffer;
 		irc_parse(buffer);
-		
+		//Input();
+		GetMSG(buffer);
 	}
 	IRC_Disconnect();
 	exit(1);
