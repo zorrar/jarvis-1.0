@@ -21,7 +21,7 @@ using namespace std;
 //Konstanten
 const unsigned int iMaxLine = 1024;
 const int iPort = 6667;//6668;
-const char *cHost = "localhost"; //"irc.atw-inter.net";
+const char *cHost = "localhost";//"port80c.se.quakenet.org";
 
 //Globale Variablen
 #ifdef WIN32
@@ -101,16 +101,30 @@ void s2u(const char *msg)
 	send(sockfd, msg, strlen(msg), 0);
 }
 
+//Channel betretten
+void ChannelConnect()
+{
+	//sleep(3);
+	printf("Entering...\r\n");
+	s2u("JOIN #ircbottesting");
+	s2u("PRIVMSG #ircbottesting : Hello\r\n");
+	//s2u("#ircbottesting : Hello World\r\n");
+}
+
 //IRC Identifizieren
 void IRC_Identify()
 {
-	s2u("NICK Jarvis_MK04\r\n");
+	s2u("NICK JarvisMK1\r\n");
+	//s2u("LOCALHOST);// 192.168.1.1");
+	s2u("USER Jarvis 0 * :JarvisMK1Bot\r\n");
+	
 	//s2u("PRIVMSG NickServ register JarvisPW123\r\n");
 	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");	
-	s2u("LOCALHOST 192.168.1.1");
+	
 	//s2u("SERVER ircnet.eversible.com");
-	s2u("USER Jarvis 0 0:Jarvis\r\n");
+	
 	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
+	ChannelConnect();
 }
 
 //Nachricht senden
@@ -121,13 +135,14 @@ void SendMsg()
 
 //IRC Still Connected Test -> IRCSCT
 //IRC-Server Verbindungs Test
-void IRCSCT(string &buffer)
+void IRCSCT(const string &buffer)
 {
 	size_t pingPos = buffer.find("PING");
 	if(pingPos != string::npos)
 	{
 		string pong("PONG"+buffer.substr(pingPos+4)+"\r\n");
-		printf("pong");
+		//cout << pong\r\n;
+		printf("pong\r\n");
 		s2u(pong.c_str());
 	}
 }
@@ -138,20 +153,14 @@ void GetMsg()
 
 }
 
-//Channel betrette
-void ChannelConnect()
-{
-	//sleep(3);
-	printf("Entering...\r\n");
-	s2u("join #ircbottesting");
-	s2u("PRIVMSG #ircbottesting : Hello\r\n");
-	//s2u("#ircbottesting : Hello World\r\n");
-}
-
 //BOT Funktionen
-void BotFunctions()
+void BotFunctions(const string &buffer)
 {
-
+	size_t pos = 0;
+	if(( pos = buffer.find(":say "))!=string::npos)
+	{
+		s2u(("PRIVMSG #channel :" +buffer.substr(pos+5)+"\r\n").c_str());
+	}
 }
 
 void irc_parse(string buffer)
@@ -161,6 +170,7 @@ void irc_parse(string buffer)
 		buffer.erase(buffer.length()-2);
 	}
 	IRCSCT(buffer);
+	BotFunctions(buffer);
 }
 
 //Programm Start
@@ -195,7 +205,9 @@ int itest =0;
 		cout << buffer;
 		irc_parse(buffer);
 	
-	if(itest == 0)
+	ChannelConnect();
+	
+	if(itest == -1)
 	{
 		ChannelConnect();
 		printf("Channel Entered \n");
