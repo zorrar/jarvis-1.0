@@ -3,6 +3,8 @@
 #include<cstdlib>
 #include<cstdio>
 #include<cstring>
+#include<time.h>
+#include<stdio.h>
 
 #ifdef WIN32
 #include<winsock2.h>
@@ -18,10 +20,13 @@
 //Namespace
 using namespace std;
 
-//Konstanten
+//Bot Settings
 const unsigned int iMaxLine = 1024;
-const int iPort = 6667;
-const char *cHost = "PA.EnterTheGame.Com";
+char cHost[] = "localhost";//"PA.EnterTheGame.Com";
+int iPort = 6667;
+string sBotName = (string)"Jarvis MK0";
+string sUserName = (string)"Jarvis";
+string sChannelName = (string)"ircbottesting";
 
 //Globale Variablen
 #ifdef WIN32
@@ -29,6 +34,33 @@ SOCKET sockfd;
 #else
 int sockfd;
 #endif
+
+//Settings Laden
+void LoadData()
+{
+
+}
+
+//Settings Anzeigen
+void ShowData()
+{
+	printf("Welcome and thank you for using Jarvis the IRCBot.\r\n");
+	printf("The Bots current Settings are as followed:\r\n");
+	printf("\r\n");
+	printf("SERVER: %s \r\n", cHost);
+	printf("PORT: %i \r\n", iPort);
+	printf("CHANNEL NAME: %s \r\n", sChannelName.c_str());
+	printf("BOT NAME: %s \r\n", sBotName.c_str());
+	printf("USER NAME: %s \r\n", sUserName.c_str());
+	printf("\r\n");
+}
+
+//Settings einstellen
+void SetData()
+{
+	
+
+}
 
 //IRC Trennen
 void IRC_Disconnect()
@@ -54,7 +86,7 @@ void IRC_Disconnect()
 //IRC Verbinden
 void IRC_Connect()
 {
-
+	printf("IRC connecting... \r\n");
 
 	//Windows-Socket initialisieren
 	#ifdef WIN32
@@ -94,6 +126,8 @@ void IRC_Connect()
 		IRC_Disconnect();
 		exit(1);
 	}
+
+	printf("IRC connected \r\n");
 }
 
 void s2u(const char *msg)
@@ -104,24 +138,45 @@ void s2u(const char *msg)
 //Channel betretten
 void ChannelConnect()
 {
-	//sleep(3);
-	printf("Channel Entering...\r\n");
-	s2u("JOIN #ircbottesting\r\n");
-	s2u("NOTICE #ircbottesting :THE BOT JarvisMK1 HAS JOINED THE CHANNEL!\r\n");
-	s2u("PRIVMSG Zorrar :Hello here I am\r\n");
-	s2u("PRIVMSG #ircbottesting :Hello I am a Bot in testing\r\n");
-	printf("Channel Entered\r\n");
+	string buffer;
+
+
+	printf("Channel entering...\r\n");
+	
+	buffer = "JOIN #" + sChannelName + "\r\n";
+	s2u(buffer.c_str());	
+	buffer = "NOTICE #" + sChannelName + " :THE BOT " + sBotName + " HAS JOINED THE CHANNEL\r\n";
+	s2u(buffer.c_str());
+	buffer = "PRIVMSG #" + sChannelName + " :Hello I am " + sBotName + " a Bot\r\n";
+	s2u(buffer.c_str());
+
+	//s2u("NOTICE #ircbottesting :THE BOT JarvisMK1 HAS JOINED THE CHANNEL!\r\n");
+	//s2u("PRIVMSG #ircbottesting :Hello I am a Bot in testing\r\n");
+	
+	printf("Channel entered\r\n");
 }
 
 //IRC Identifizieren
 void IRC_Identify()
 {
-	s2u("NICK JarvisMK1\r\n");
-	s2u("USER Jarvis 0 * :JarvisMK1Bot\r\n");
+	printf("IRC identifing...\r\n");
+	
+
+	string buffer;
+	buffer = "NICK " + sBotName + "\r\n";
+	s2u(buffer.c_str());	
+	
+	buffer = "USER " + sUserName + " 0 * :" + sUserName + "\r\n";
+	s2u(buffer.c_str());
+
+	//s2u("NICK " + sBotName.c_str() + "\r\n");
+	//s2u("USER %s 0 * :%s\r\n", sUserName, sUserName);
+	
 	//s2u("LOCALHOST");
-	//s2u("PRIVMSG NickServ REGISTER\r\n");
+	s2u("PRIVMSG NickServ REGISTER\r\n");
 	s2u("PRIVMSG NickServ IDENTIFY\r\n");	
 	
+	//s2u(sBotName.c_str());
 	//printf("Waiting for 5 seconds to let the bot connect to the server\r\n");
 	//sleep(5);
 	//printf("Continue...\r\n");
@@ -130,6 +185,8 @@ void IRC_Identify()
 	
 	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
 	//ChannelConnect();
+
+	printf("IRC identifed\r\n");
 }
 
 //IRC Still Connected Test -> IRCSCT
@@ -153,15 +210,28 @@ void GetMSG(const string &buffer)
 	//buffer.find("PRIVMSG");
 	if(MSG != string::npos)
 	{
-		printf("%lu\r\n", MSG);
+		//printf("%lu\r\n", MSG);
 		int Value = MSG;
 		//string sMSG("%s",buffer);// buffer.substr(MSG+16) + "\r\n");
-		printf("BUFFER: ");
+
+		time_t timer;
+		//asctime(localtime(timer));
+		time(&timer);
+		struct tm * time2;
+		time2 = localtime(&timer);
+		//string stime = asctime(time);
+		//for(int i; i < ctime.lengue; i++)
+		//{
+			string stime = asctime(time2);
+			stime.erase(stime.length()-1);
+			printf("%s: ", stime.c_str());
+		//}
+		
 		for(int i = MSG; i < buffer.length(); i++)
 		{
 			printf("%c", buffer[i]);
 		}
-		printf("\r\n");
+		//printf("\r\n");
 	}
 	//printf("%s", MSG.c_str());
 }
@@ -183,53 +253,23 @@ void irc_parse(string buffer)
 	if(buffer.find("\r\n") == buffer.length()-2)
 	{
 		buffer.erase(buffer.length()-2);
+		//printf("BUFFERERASE! BUFFER: %s - END\r\n", buffer.c_str());
 	}
 	IRCSCT(buffer);
 	//BotFunctions(buffer);
 }
 
-//Get Input
-void Input()
-{
-	char cInput[256];
-	/*
-	while(scanf("%s", cInput) > cInput.length())
-	{
-		printf("%s\r\n", cInput);
-	}
-	*/
-/*
-	if(gets())
-	{
-		printf("KEY WAS PRESSED");
-	}
-*/	
-	/*
-	if(cInput == "exit" || cInput == "EXIT" || cInput == "Exit")
-	{
-		printf("Close Application\r\n");
-		exit(1);
-	}
-	*/
-}
-
 //Programm Start
 int main()
 {
+	//Shows the current Settings
+	ShowData();
+
 	//Verbindung herstellen
-	printf("IRC Connecting \n");	
 	IRC_Connect();
-	printf("IRC Connected \n");
 	
-	
-
 	//Beim Server identifizieren
-	printf("IRC Identify \n");
 	IRC_Identify();
-	printf("IRC Identifed \n");
-
-	//char buffer2[iMaxLine+1] = {0};
-	//irc_parse(buffer2);
 
 	//Channel betretten
 	ChannelConnect();
