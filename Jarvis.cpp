@@ -24,7 +24,7 @@ using namespace std;
 const unsigned int iMaxLine = 1024;
 char cHost[] = "localhost";//"PA.EnterTheGame.Com";
 int iPort = 6667;
-string sBotName = (string)"Jarvis MK0";
+char sBotName[] = "Jarvis MK0";
 string sUserName = (string)"Jarvis";
 string sChannelName = (string)"ircbottesting";
 
@@ -44,22 +44,113 @@ void LoadData()
 //Settings Anzeigen
 void ShowData()
 {
+	printf("\r\n");
 	printf("Welcome and thank you for using Jarvis the IRCBot.\r\n");
-	printf("The Bots current Settings are as followed:\r\n");
+	printf("The current Bot settings are as followed:\r\n");
 	printf("\r\n");
 	printf("SERVER: %s \r\n", cHost);
 	printf("PORT: %i \r\n", iPort);
 	printf("CHANNEL NAME: %s \r\n", sChannelName.c_str());
-	printf("BOT NAME: %s \r\n", sBotName.c_str());
+	printf("BOT NAME: %s \r\n", sBotName);
 	printf("USER NAME: %s \r\n", sUserName.c_str());
 	printf("\r\n");
 }
 
+//Check for yes or no answers
+struct YesNoCheck
+{
+
+	bool YesCheck(char cAnswer[4])
+	{printf("%s", cAnswer);
+		if(	cAnswer[0] == 'y' && cAnswer[1] == 0 ||
+			cAnswer[0] == 'Y' && cAnswer[1] == 0 ||
+			cAnswer[0] == 'y' && cAnswer[1] == 'e' && cAnswer[2] == 's' 
+			&& cAnswer[3] == 0 ||
+			cAnswer[0] == 'Y' && cAnswer[1] == 'e' && cAnswer[2] == 's' 
+			&& cAnswer[3] == 0 ||
+			cAnswer[0] == 'Y' && cAnswer[1] == 'E' && cAnswer[2] == 'S' 
+			&& cAnswer[3] == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	bool NoCheck(char cAnswer[4])
+	{
+		printf("%s", cAnswer);
+		if(	cAnswer[0] == 'n' && cAnswer[1] == 0 ||
+			cAnswer[0] == 'N' && cAnswer[1] == 0 ||
+			cAnswer[0] == 'n' && cAnswer[1] == 'o' && cAnswer[2] == 0 ||
+			cAnswer[0] == 'N' && cAnswer[1] == 'o' && cAnswer[2] == 0 ||
+			cAnswer[0] == 'N' && cAnswer[1] == 'O' && cAnswer[2] == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+};
+
 //Settings einstellen
 void SetData()
 {
-	
+	char cAnswer[4];
+	bool bLoop = true;
 
+	printf("Would you like to change the current settings?\r\n");
+	
+	
+	for(; bLoop == true;)
+	{
+		printf("(Y)es / (N)o?\r\n");
+		//printf("%i\r\n", bLoop);
+		scanf("%s", cAnswer);
+		fflush(stdin);
+
+		if(YesNoCheck().YesCheck(cAnswer))
+		{
+			bLoop = false;
+			printf("\r\n");
+			char cbuffer[250];
+			//cbuffer == "blub";
+			fflush(stdin);
+			
+
+			printf("Edit settings\r\n");
+			printf("SERVER: "); 		scanf("%s", cHost);fflush(stdin);
+			printf("PORT: "); 		scanf("%i", &iPort);fflush(stdin);
+			printf("CHANNEL NAME: "); 	scanf("%s", sBotName);fflush(stdin);//sChannelName.c_str);
+			//sBotName = cbuffer;fflush(stdin);
+
+			printf("BOT NAME: "); 		//scanf("%s", &sBotName);
+			printf("USER NAME: "); 		//scanf("%s", &sUserName);
+			printf("\r\n");
+			printf("Is everything allright?\r\n");
+			printf("(Y)es / (N)o?\r\n");
+//printf("%s", sBotName);
+
+			printf("\r\n");
+		}
+		else if(YesNoCheck().NoCheck(cAnswer))
+		{
+			bLoop = false;
+			printf("\r\n");
+			printf("Continue...\r\n");
+			printf("\r\n");
+		}
+		else
+		{
+			bLoop = true;
+			printf("\r\n");
+			printf("Please only answere with (Y)es or (N)o\r\n");
+		}
+	}
 }
 
 //IRC Trennen
@@ -163,7 +254,8 @@ void IRC_Identify()
 	
 
 	string buffer;
-	buffer = "NICK " + sBotName + "\r\n";
+	//buffer = "NICK " + sBotName + "\r\n";
+	buffer = "NICK " + strlen(sBotName);	
 	s2u(buffer.c_str());	
 	
 	buffer = "USER " + sUserName + " 0 * :" + sUserName + "\r\n";
@@ -262,8 +354,14 @@ void irc_parse(string buffer)
 //Programm Start
 int main()
 {
+	//Loads the Settings from a external confic file
+	LoadData();
+
 	//Shows the current Settings
 	ShowData();
+
+	//Sets the configs per user input
+	SetData();
 
 	//Verbindung herstellen
 	IRC_Connect();
