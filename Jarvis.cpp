@@ -25,8 +25,8 @@ const unsigned int iMaxLine = 1024;
 char cHost[] = "localhost";//"PA.EnterTheGame.Com";
 int iPort = 6667;
 char sBotName[] = "Jarvis MK0";
-string sUserName = (string)"Jarvis";
-string sChannelName = (string)"ircbottesting";
+char sUserName[] = "Jarvis";
+char sChannelName[] = "ircbottesting";
 
 //Globale Variablen
 #ifdef WIN32
@@ -50,9 +50,9 @@ void ShowData()
 	printf("\r\n");
 	printf("SERVER: %s \r\n", cHost);
 	printf("PORT: %i \r\n", iPort);
-	printf("CHANNEL NAME: %s \r\n", sChannelName.c_str());
+	printf("CHANNEL NAME: %s \r\n", sChannelName);
 	printf("BOT NAME: %s \r\n", sBotName);
-	printf("USER NAME: %s \r\n", sUserName.c_str());
+	printf("USER NAME: %s \r\n", sUserName);
 	printf("\r\n");
 }
 
@@ -61,7 +61,7 @@ struct YesNoCheck
 {
 
 	bool YesCheck(char cAnswer[4])
-	{printf("%s", cAnswer);
+	{
 		if(	cAnswer[0] == 'y' && cAnswer[1] == 0 ||
 			cAnswer[0] == 'Y' && cAnswer[1] == 0 ||
 			cAnswer[0] == 'y' && cAnswer[1] == 'e' && cAnswer[2] == 's' 
@@ -81,7 +81,6 @@ struct YesNoCheck
 
 	bool NoCheck(char cAnswer[4])
 	{
-		printf("%s", cAnswer);
 		if(	cAnswer[0] == 'n' && cAnswer[1] == 0 ||
 			cAnswer[0] == 'N' && cAnswer[1] == 0 ||
 			cAnswer[0] == 'n' && cAnswer[1] == 'o' && cAnswer[2] == 0 ||
@@ -109,33 +108,80 @@ void SetData()
 	for(; bLoop == true;)
 	{
 		printf("(Y)es / (N)o?\r\n");
-		//printf("%i\r\n", bLoop);
 		scanf("%s", cAnswer);
 		fflush(stdin);
 
 		if(YesNoCheck().YesCheck(cAnswer))
 		{
 			bLoop = false;
-			printf("\r\n");
-			char cbuffer[250];
-			//cbuffer == "blub";
 			fflush(stdin);
-			
+			for(bool bLoop2 = true; bLoop2 == true;)
+			{
+				printf("\r\n");
+				char cAnswerLoop2[4];
 
-			printf("Edit settings\r\n");
-			printf("SERVER: "); 		scanf("%s", cHost);fflush(stdin);
-			printf("PORT: "); 		scanf("%i", &iPort);fflush(stdin);
-			printf("CHANNEL NAME: "); 	scanf("%s", sBotName);fflush(stdin);//sChannelName.c_str);
-			//sBotName = cbuffer;fflush(stdin);
+				printf("Edit settings\r\n");
+				printf("SERVER: "); 		scanf("%s", cHost);fflush(stdin);
+				printf("PORT: "); 		scanf("%i", &iPort);fflush(stdin);
+				printf("CHANNEL NAME: "); 	scanf("%s", sChannelName);fflush(stdin);
+				printf("BOT NAME: "); 		scanf("%s", sBotName);fflush(stdin);
+				printf("USER NAME: "); 		scanf("%s", sUserName);fflush(stdin);
+				printf("\r\n");
+				printf("Is everything alright?\r\n");
+				printf("(Y)es / (N)o?\r\n");
+				scanf("%s", cAnswerLoop2);
+				fflush(stdin);
 
-			printf("BOT NAME: "); 		//scanf("%s", &sBotName);
-			printf("USER NAME: "); 		//scanf("%s", &sUserName);
-			printf("\r\n");
-			printf("Is everything allright?\r\n");
-			printf("(Y)es / (N)o?\r\n");
-//printf("%s", sBotName);
+				if(YesNoCheck().YesCheck(cAnswerLoop2))
+				{
+					bLoop2 = false;
+					printf("\r\n");
+					printf("Continue...\r\n");
+					printf("\r\n");
+				}
+				else if(YesNoCheck().NoCheck(cAnswerLoop2))
+				{
+					bLoop2 = true;
+					printf("\r\n");
+					printf("Please correct the settings then.\r\n");
+					printf("\r\n");
+				}
+				else
+				{
+					
 
-			printf("\r\n");
+					for(bool bLoop3 = true; bLoop3 == true;)
+					{
+						char cAnswerLoop3[4];
+						printf("\r\n");
+						printf("Please only answere with (Y)es or (N)o\r\n");
+						printf("Is everything alright?\r\n");
+						printf("(Y)es / (N)o?\r\n");
+						scanf("%s", cAnswerLoop3);
+						fflush(stdin);
+						if(YesNoCheck().YesCheck(cAnswerLoop3))
+						{
+							bLoop3 = false;
+							bLoop2 = false;
+							printf("\r\n");
+							printf("Continue...\r\n");
+							printf("\r\n");
+						}
+						else if(YesNoCheck().NoCheck(cAnswerLoop3))
+						{
+							bLoop3 = false;
+							bLoop2 = true;
+							printf("\r\n");
+							printf("Please correct the settings then.\r\n");
+							printf("\r\n");
+						}
+						else
+						{
+							bLoop3 = true;
+						}
+					}
+				}
+			}
 		}
 		else if(YesNoCheck().NoCheck(cAnswer))
 		{
@@ -230,21 +276,30 @@ void s2u(const char *msg)
 void ChannelConnect()
 {
 	string buffer;
-
+	string sChannel;
+	string sName;
 
 	printf("Channel entering...\r\n");
 	
-	buffer = "JOIN #" + sChannelName + "\r\n";
-	s2u(buffer.c_str());	
-	buffer = "NOTICE #" + sChannelName + " :THE BOT " + sBotName + " HAS JOINED THE CHANNEL\r\n";
+	sChannel = sChannelName;
+	sName = sBotName;
+
+	buffer = "JOIN #" + sChannel;
 	s2u(buffer.c_str());
-	buffer = "PRIVMSG #" + sChannelName + " :Hello I am " + sBotName + " a Bot\r\n";
+	s2u("\r\n");
+	
+	
+
+	buffer = "NOTICE #" + sChannel + " :THE BOT " + sName + " HAS JOINED THE CHANNEL\r\n";
+	s2u(buffer.c_str());
+
+	buffer = "PRIVMSG #" + sChannel + " :Hello I am " + sName + " a Bot\r\n";
 	s2u(buffer.c_str());
 
 	//s2u("NOTICE #ircbottesting :THE BOT JarvisMK1 HAS JOINED THE CHANNEL!\r\n");
 	//s2u("PRIVMSG #ircbottesting :Hello I am a Bot in testing\r\n");
 	
-	printf("Channel entered\r\n");
+	printf("Channel entered\r\n\r\n");
 }
 
 //IRC Identifizieren
@@ -254,11 +309,16 @@ void IRC_Identify()
 	
 
 	string buffer;
-	//buffer = "NICK " + sBotName + "\r\n";
-	buffer = "NICK " + strlen(sBotName);	
+	string sNick;
+	string sUser;
+
+	sNick = sBotName;
+	sUser = sUserName;
+
+	buffer = "NICK " + sNick + "\r\n";	
 	s2u(buffer.c_str());	
 	
-	buffer = "USER " + sUserName + " 0 * :" + sUserName + "\r\n";
+	buffer = "USER " + sUser + " 0 * :" + sUser + "\r\n";
 	s2u(buffer.c_str());
 
 	//s2u("NICK " + sBotName.c_str() + "\r\n");
@@ -386,7 +446,6 @@ int main()
 		}
 		cout << buffer;
 		irc_parse(buffer);
-		//Input();
 		GetMSG(buffer);
 	}
 	IRC_Disconnect();
