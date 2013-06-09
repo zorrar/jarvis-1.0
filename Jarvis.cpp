@@ -5,6 +5,7 @@
 #include<cstring>
 #include<time.h>
 #include<stdio.h>
+#include"logging.h"
 
 #ifdef WIN32
 #include<winsock2.h>
@@ -24,8 +25,8 @@ using namespace std;
 const unsigned int iMaxLine = 1024;
 char cHost[] = "localhost";//"PA.EnterTheGame.Com";
 int iPort = 6667;
-char sBotName[] = "Jarvis MK0";
-char sUserName[] = "Jarvis";
+char sBotName[] = "JarvisMK10";
+char sUserName[] = "Stark";
 char sChannelName[] = "ircbottesting";
 
 //Globale Variablen
@@ -320,23 +321,11 @@ void IRC_Identify()
 	
 	buffer = "USER " + sUser + " 0 * :" + sUser + "\r\n";
 	s2u(buffer.c_str());
-
-	//s2u("NICK " + sBotName.c_str() + "\r\n");
-	//s2u("USER %s 0 * :%s\r\n", sUserName, sUserName);
 	
 	//s2u("LOCALHOST");
 	s2u("PRIVMSG NickServ REGISTER\r\n");
 	s2u("PRIVMSG NickServ IDENTIFY\r\n");	
 	
-	//s2u(sBotName.c_str());
-	//printf("Waiting for 5 seconds to let the bot connect to the server\r\n");
-	//sleep(5);
-	//printf("Continue...\r\n");
-
-	//s2u("SERVER ircnet.eversible.com");
-	
-	//s2u("PRIVMSG NickServ IDENTIFY JarvisPW123\r\n");
-	//ChannelConnect();
 
 	printf("IRC identifed\r\n");
 }
@@ -355,37 +344,64 @@ void IRCSCT(const string &buffer)
 	}
 }
 
-//Messages Incoming
-void GetMSG(const string &buffer)
+//Message Infomation
+struct InfoMSG
 {
-	size_t MSG = buffer.find("#");//"BLUB\r\n\r\n\r\n";
-	//buffer.find("PRIVMSG");
+	string sDate;
+	string sCommand;
+	string sNickSender;
+	string sNickUser;
+	string sMessage;
+};
+
+//Filter Messages for Keywards
+void Search(string sKeyword, const string Message)
+{
+	size_t MSG = Message.find(sKeyword.c_str());
+	InfoMSG Info;
+
 	if(MSG != string::npos)
 	{
-		//printf("%lu\r\n", MSG);
 		int Value = MSG;
-		//string sMSG("%s",buffer);// buffer.substr(MSG+16) + "\r\n");
 
 		time_t timer;
-		//asctime(localtime(timer));
 		time(&timer);
 		struct tm * time2;
 		time2 = localtime(&timer);
-		//string stime = asctime(time);
-		//for(int i; i < ctime.lengue; i++)
-		//{
-			string stime = asctime(time2);
-			stime.erase(stime.length()-1);
-			printf("%s: ", stime.c_str());
-		//}
+
+		string stime = asctime(time2);
+		stime.erase(stime.length()-1);
 		
-		for(int i = MSG; i < buffer.length(); i++)
+		Info.sDate = stime.c_str();
+		printf("%s: ", stime.c_str());
+		
+		for(int i = MSG; i < Message.length(); i++)
 		{
-			printf("%c", buffer[i]);
+			printf("%c", Message[i]);
 		}
-		//printf("\r\n");
 	}
-	//printf("%s", MSG.c_str());
+	//return Info.sDate.value;
+}
+
+//Messages Incoming
+void GetMSG(const string &buffer)
+{
+	string sKeyword;
+	
+	InfoMSG Info;
+	string sDate = Info.sDate;
+
+	sKeyword = "JOIN";
+	Search(sKeyword, buffer);
+	
+	sKeyword = "QUIT";
+	Search(sKeyword, buffer);
+
+	sKeyword = "PRIVMSG";
+	Search(sKeyword, buffer);
+
+	sKeyword = "NOTICE";
+	Search(sKeyword, buffer);
 }
 
 //CHAT Loggen
@@ -397,7 +413,7 @@ void LogChat()
 //BOT Funktionen
 void BotFunctions(string buffer)
 {
-	s2u("PRIVMSG Zorrar :Hello");
+	//s2u("PRIVMSG Zorrar :Hello");
 }
 
 void irc_parse(string buffer)
@@ -432,6 +448,7 @@ int main()
 	//Channel betretten
 	ChannelConnect();
 	
+	
 	LogChat();
 
 	for(;;)
@@ -440,11 +457,11 @@ int main()
 		char buffer[iMaxLine+1] = {0};
 		if(recv(sockfd, buffer, iMaxLine*sizeof(char), 0)<0)
 		{
-			perror("recv()");
+			perror("recv()\r\n");
 			IRC_Disconnect();
 			exit(1);
 		}
-		cout << buffer;
+		//cout << buffer;
 		irc_parse(buffer);
 		GetMSG(buffer);
 	}
