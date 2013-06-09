@@ -354,26 +354,37 @@ struct InfoMSG
 	string sMessage;
 };
 
+//Zeitausgabe ausgabe
+string DateOutput()
+{
+	InfoMSG Info;
+
+	time_t timer;
+	time(&timer);
+	struct tm * time2;
+	time2 = localtime(&timer);
+
+	string stime = asctime(time2);
+	stime.erase(stime.length()-1);
+
+	Info.sDate = stime.c_str();
+	//printf("%s: ", stime.c_str());
+
+	return stime.c_str();
+}
+
 //Filter Messages for Keywards
 void Search(string sKeyword, const string Message)
 {
 	size_t MSG = Message.find(sKeyword.c_str());
-	InfoMSG Info;
+	
 
 	if(MSG != string::npos)
 	{
 		int Value = MSG;
-
-		time_t timer;
-		time(&timer);
-		struct tm * time2;
-		time2 = localtime(&timer);
-
-		string stime = asctime(time2);
-		stime.erase(stime.length()-1);
-		
-		Info.sDate = stime.c_str();
-		printf("%s: ", stime.c_str());
+		string sDate;
+		sDate = DateOutput();
+		printf("%s ", sDate.c_str());
 		
 		for(int i = MSG; i < Message.length(); i++)
 		{
@@ -407,7 +418,32 @@ void GetMSG(const string &buffer)
 //CHAT Loggen
 void LogChat()
 {
-	//s2u("LOG");
+	printf("LOG: \r\n");
+	
+	int id;
+	string sTableName = "Log";
+	sqlite3 *db_handler;
+
+	//Jarvis_db.sql
+
+	sqlite3_open(DATABSE_FILE, &db_handler);
+
+	CreateTable(db_handler, sTableName);
+
+	InsertData(	db_handler, 
+			sTableName, 
+			DateOutput(), 
+			"TEST SenderUser", 
+			"TEST sSenderNick", 
+			"TEST sReceiverUser", 
+			"TEST sReceiverNick", 
+			"TEST sCommand", 
+			"TEST sMessage");
+
+	PrintData(db_handler, sTableName);
+
+	printf("END LOG \r\n\r\n");
+
 }
 
 //BOT Funktionen
@@ -448,7 +484,7 @@ int main()
 	//Channel betretten
 	ChannelConnect();
 	
-	
+	//Channel Loggen
 	LogChat();
 
 	for(;;)
