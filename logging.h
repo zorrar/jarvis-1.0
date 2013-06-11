@@ -11,7 +11,7 @@ void CreateTable(sqlite3 *sq3DataBase, string sTableName)
 {
 	//Create Query SQL-Message
 	string sMessageSQL;
-	sMessageSQL = "CREATE TABLE " + sTableName + " (id integer primary key, Date text, SenderUser text, SenderNick text, ReceiverUser text, ReceiverNick text, Command text, Message text)";
+	sMessageSQL = "CREATE TABLE " + sTableName + " (id integer primary key, Date text, SenderNick text, SenderUser text, Command text, ReceiverNick text, Message text)";
 	
 	//Query Execution Interface
 	sqlite3_exec(sq3DataBase, sMessageSQL.c_str(), NULL, NULL, NULL);
@@ -20,17 +20,16 @@ void CreateTable(sqlite3 *sq3DataBase, string sTableName)
 //Eintrag in die Tabelle einfügen
 void InsertData(sqlite3 *sq3DataBase, 
 		string sTableName, 
-		string sDate, 
-		string sSenderUser, 
-		string sSenderNick, 
-		string sReceiverUser, 
-		string sReceiverNick, 
-		string sCommand, 
+		string sDate,
+		string sSenderNick,
+		string sSenderUser,
+		string sCommand,  
+		string sReceiverNick,  
 		string sMessage)
 {
 	//Create Query SQL-Message
 	string sMessageSQL;
-	sMessageSQL = "INSERT INTO " + sTableName + " (Date, SenderUser, SenderNick, ReceiverUser, ReceiverNick, Command, Message) values ('"+sDate+"' ,'"+sSenderUser+"' ,'"+sSenderNick+"' ,'"+sReceiverUser+"' ,'"+sReceiverNick+"' ,'"+sCommand+"' ,'"+sMessage+"');";
+	sMessageSQL = "INSERT INTO " + sTableName + " (Date, SenderNick, SenderUser, Command, ReceiverNick, Message) values ('"+sDate+"' ,'"+sSenderNick+"' ,'"+sSenderUser+"' ,'"+sCommand+"' ,'"+sReceiverNick+"' ,'"+sMessage+"');";
 
 	//Query Execution Interface
 	sqlite3_exec(sq3DataBase, sMessageSQL.c_str(), NULL, NULL, NULL);
@@ -53,7 +52,7 @@ void PrintData(sqlite3 *sq3DataBase, string sTableName)
 	while(sqlite3_step(sql3Statement) != SQLITE_DONE)
 	{
 		//Ausgabe der Datenfelder als Text
-		printf("%s %s %s %s %s %s %s\r\n", sqlite3_column_text(sql3Statement, 1), sqlite3_column_text(sql3Statement, 2), sqlite3_column_text(sql3Statement, 3), sqlite3_column_text(sql3Statement, 4), sqlite3_column_text(sql3Statement, 5), sqlite3_column_text(sql3Statement, 6), sqlite3_column_text(sql3Statement, 7));
+		printf("%s %s %s %s %s %s\r\n", sqlite3_column_text(sql3Statement, 1), sqlite3_column_text(sql3Statement, 2), sqlite3_column_text(sql3Statement, 3), sqlite3_column_text(sql3Statement, 4), sqlite3_column_text(sql3Statement, 5), sqlite3_column_text(sql3Statement, 6));
 	}
 
 	//Statement löschen

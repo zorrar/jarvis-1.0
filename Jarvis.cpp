@@ -29,6 +29,13 @@ char sBotName[] = "JarvisMK10";
 char sUserName[] = "Stark";
 char sChannelName[] = "ircbottesting";
 
+
+bool bLogChat = true;
+string sTableName = "Log";
+sqlite3 *db_handler;
+
+
+
 //Globale Variablen
 #ifdef WIN32
 SOCKET sockfd;
@@ -258,8 +265,10 @@ void IRC_Connect()
 	sin.sin_port = htons(iPort);
 	memset(&(sin.sin_zero), 0, 8*sizeof(char));
 
+	printf("\r\n%i\r\n", sockfd);
 	if(connect(sockfd, (sockaddr*) &sin, sizeof(sin)) == -1)
 	{
+		printf("\r\n%i\r\n", sockfd);
 		perror("connect()");
 		IRC_Disconnect();
 		exit(1);
@@ -376,22 +385,75 @@ string DateOutput()
 //Filter Messages for Keywards
 void Search(string sKeyword, const string Message)
 {
+	
 	size_t MSG = Message.find(sKeyword.c_str());
 	
-
 	if(MSG != string::npos)
 	{
 		int Value = MSG;
 		string sDate;
 		sDate = DateOutput();
-		printf("%s ", sDate.c_str());
-		
-		for(int i = MSG; i < Message.length(); i++)
+
+		string sSenderNick;
+		int iSenderNickStringPos = Message.find(":", 0)+1;
+		int iSenderNickStringEnd = Message.find("!", 2);
+		int iSenderNickLength = iSenderNickStringEnd - iSenderNickStringPos;
+		for(int i = 0; i < iSenderNickLength; i++)
 		{
-			printf("%c", Message[i]);
+			sSenderNick = sSenderNick + Message[iSenderNickStringPos + i];	
 		}
+
+		string sSenderUser;
+		int iSenderUserStringPos = Message.find("!", 0)+1;
+		int iSenderUserStringEnd = Message.find("@", 2);
+		int iSenderUserLength = iSenderUserStringEnd - iSenderUserStringPos;
+		for(int i = 0; i < iSenderUserLength; i++)
+		{
+			sSenderUser = sSenderUser + Message[iSenderUserStringPos + i];
+		}
+
+		string sCommand;
+		sCommand = sKeyword;
+
+		int iNickStringPos = MSG + (int)sKeyword.length()+1;
+		int iNickStringEnd = Message.find(":", 2);
+		int iNickLength = iNickStringEnd - iNickStringPos;
+		string sReceiverNick;
+		for(int i = 0; i < iNickLength; i++)
+		{
+			sReceiverNick = sReceiverNick + Message[iNickStringPos + i];	
+		}
+		
+
+		string sMessage;
+		for(int i = 0; i < Message.length()-iNickStringEnd; i++)
+		{
+			sMessage = sMessage + Message[iNickStringEnd + i];	
+		}
+
+		
+		printf("%s ", sDate.c_str());//OK
+		
+		printf("%s ", sSenderNick.c_str());//OK
+
+		printf("%s ", sSenderUser.c_str());//OK
+		
+		printf("%s ", sCommand.c_str());//OK
+		
+		printf("%s ", sReceiverNick.c_str());//OK
+		
+		printf("%s ", sMessage.c_str());//OK
+		
+		InsertData(	db_handler, 
+				sTableName, 
+				DateOutput(),  
+				sSenderNick.c_str(),
+				sSenderUser.c_str(), 
+				sCommand.c_str(), 
+				sReceiverNick.c_str(), 
+				sMessage.c_str());
+
 	}
-	//return Info.sDate.value;
 }
 
 //Messages Incoming
@@ -415,35 +477,33 @@ void GetMSG(const string &buffer)
 	Search(sKeyword, buffer);
 }
 
-//CHAT Loggen
-void LogChat()
+//Prints the ChatLog
+void ShowLog()
 {
 	printf("LOG: \r\n");
-	
-	int id;
-	string sTableName = "Log";
-	sqlite3 *db_handler;
-
-	//Jarvis_db.sql
-
-	sqlite3_open(DATABSE_FILE, &db_handler);
-
-	CreateTable(db_handler, sTableName);
-
-	InsertData(	db_handler, 
-			sTableName, 
-			DateOutput(), 
-			"TEST SenderUser", 
-			"TEST sSenderNick", 
-			"TEST sReceiverUser", 
-			"TEST sReceiverNick", 
-			"TEST sCommand", 
-			"TEST sMessage");
-
 	PrintData(db_handler, sTableName);
-
 	printf("END LOG \r\n\r\n");
+}
 
+//CHAT Loggen
+void StartChatLogging()
+{
+	if(bLogChat == true)
+	{
+		string buffer;
+		string sChannel;
+		sChannel = sChannelName;
+		buffer = "Start logging Channel: " + sChannel;
+	
+		InsertData(	db_handler, 
+				sTableName, 
+				DateOutput(), 
+				sBotName,
+				sUserName,
+				"-", 
+				"-",  
+				buffer );
+	}
 }
 
 //BOT Funktionen
@@ -475,6 +535,9 @@ int main()
 	//Sets the configs per user input
 	SetData();
 
+	sqlite3_open(DATABSE_FILE, &db_handler);
+	CreateTable(db_handler, sTableName);
+
 	//Verbindung herstellen
 	IRC_Connect();
 	
@@ -485,14 +548,18 @@ int main()
 	ChannelConnect();
 	
 	//Channel Loggen
-	LogChat();
+	StartChatLogging();
 
+	//Log ausgeben
+	ShowLog();
+	
 	for(;;)
 	{
 	
 		char buffer[iMaxLine+1] = {0};
 		if(recv(sockfd, buffer, iMaxLine*sizeof(char), 0)<0)
 		{
+			printf("BUFFER: %c blub\r\n", buffer[0]);
 			perror("recv()\r\n");
 			IRC_Disconnect();
 			exit(1);
