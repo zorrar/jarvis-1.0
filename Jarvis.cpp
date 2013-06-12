@@ -25,7 +25,7 @@ using namespace std;
 const unsigned int iMaxLine = 1024;
 char cHost[256] = "localhost";//"PA.EnterTheGame.Com";
 int iPort = 6667;
-char cBotName[256] = "JarvisMK10";
+char cBotName[256] = "Jarvis";
 char cUserName[256] = "Stark";
 char cChannelName[256] = "ircbottesting";
 
@@ -382,6 +382,38 @@ string DateOutput()
 	return stime.c_str();
 }
 
+//BOT Funktionen
+void BotFunctions(string sSearch, string sMessage, string sNick)
+{
+	/////HIER MORGEN WEITER ARBEITEN!
+	int iKeywordFinder;
+	iKeywordFinder = sMessage.find(sSearch.c_str());
+	//printf("%i\r\n" ,iKeywordFinder);
+	if(iKeywordFinder != -1 && sMessage.compare(iKeywordFinder, 7, "BOTNAME") == 0)
+	{
+		string sBuffer;
+		sBuffer = "PRIVMSG zorrar :HELLO Zorrar HERE I AM!!!\r\n\r\n";//" + sNick + "
+		s2u(sBuffer.c_str());
+
+		sBuffer = "PRIVMSG #ircbottesting :HELLO CHANNEL HERE I AM!!!\r\n\r\n";
+		// I AM " + cBotName + " A IRCBOT!\r\n
+		s2u(sBuffer.c_str());
+	}
+	
+	if(iKeywordFinder != -1 && sMessage.compare(iKeywordFinder, 8, "LASTSEEN") == 0)
+	{
+		printf("LAST SEEN USER TEST");
+		////SHOW THE LAST SEEN USER!!!
+		string sBuffer;
+		sBuffer = "PRIVMSG zorrar :LAST SEEN USER: XXX!!!\r\n\r\n";//" + sNick + "
+		s2u(sBuffer.c_str());
+
+		sBuffer = "PRIVMSG #ircbottesting :LAST SEEN USER: XXX!!!\r\n\r\n";
+		// I AM " + cBotName + " A IRCBOT!\r\n
+		s2u(sBuffer.c_str());
+	}
+}
+
 //Filter Messages for Keywards
 void Search(string sKeyword, const string Message)
 {
@@ -455,6 +487,9 @@ void Search(string sKeyword, const string Message)
 					sReceiverNick.c_str(), 
 					sMessage.c_str());
 		}
+		
+		BotFunctions("BOTNAME",sMessage, sSenderNick);
+		BotFunctions("LASTSEEN",sMessage, sSenderNick);
 	}
 }
 
@@ -539,12 +574,6 @@ void StartChatLogging()
 	}
 }
 
-//BOT Funktionen
-void BotFunctions(string buffer)
-{
-	//s2u("PRIVMSG Zorrar :Hello");
-}
-
 void irc_parse(string buffer)
 {
 	if(buffer.find("\r\n") == buffer.length()-2)
@@ -595,6 +624,8 @@ int main()
 		ShowLog();
 	}
 	
+	
+
 	for(;;)
 	{
 	
