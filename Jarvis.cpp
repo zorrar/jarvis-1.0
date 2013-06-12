@@ -23,11 +23,11 @@ using namespace std;
 
 //Bot Settings
 const unsigned int iMaxLine = 1024;
-char cHost[] = "localhost";//"PA.EnterTheGame.Com";
+char cHost[256] = "localhost";//"PA.EnterTheGame.Com";
 int iPort = 6667;
-char sBotName[] = "JarvisMK10";
-char sUserName[] = "Stark";
-char sChannelName[] = "ircbottesting";
+char cBotName[256] = "JarvisMK10";
+char cUserName[256] = "Stark";
+char cChannelName[256] = "ircbottesting";
 
 
 bool bLogChat = true;
@@ -58,9 +58,9 @@ void ShowData()
 	printf("\r\n");
 	printf("SERVER: %s \r\n", cHost);
 	printf("PORT: %i \r\n", iPort);
-	printf("CHANNEL NAME: %s \r\n", sChannelName);
-	printf("BOT NAME: %s \r\n", sBotName);
-	printf("USER NAME: %s \r\n", sUserName);
+	printf("CHANNEL NAME: %s \r\n", cChannelName);
+	printf("BOT NAME: %s \r\n", cBotName);
+	printf("USER NAME: %s \r\n", cUserName);
 	printf("\r\n");
 }
 
@@ -131,9 +131,9 @@ void SetData()
 				printf("Edit settings\r\n");
 				printf("SERVER: "); 		scanf("%s", cHost);fflush(stdin);
 				printf("PORT: "); 		scanf("%i", &iPort);fflush(stdin);
-				printf("CHANNEL NAME: "); 	scanf("%s", sChannelName);fflush(stdin);
-				printf("BOT NAME: "); 		scanf("%s", sBotName);fflush(stdin);
-				printf("USER NAME: "); 		scanf("%s", sUserName);fflush(stdin);
+				printf("CHANNEL NAME: "); 	scanf("%s", cChannelName);fflush(stdin);
+				printf("BOT NAME: "); 		scanf("%s", cBotName);fflush(stdin);
+				printf("USER NAME: "); 		scanf("%s", cUserName);fflush(stdin);
 				printf("\r\n");
 				printf("Is everything alright?\r\n");
 				printf("(Y)es / (N)o?\r\n");
@@ -291,8 +291,8 @@ void ChannelConnect()
 
 	printf("Channel entering...\r\n");
 	
-	sChannel = sChannelName;
-	sName = sBotName;
+	sChannel = cChannelName;
+	sName = cBotName;
 
 	buffer = "JOIN #" + sChannel;
 	s2u(buffer.c_str());
@@ -322,8 +322,8 @@ void IRC_Identify()
 	string sNick;
 	string sUser;
 
-	sNick = sBotName;
-	sUser = sUserName;
+	sNick = cBotName;
+	sUser = cUserName;
 
 	buffer = "NICK " + sNick + "\r\n";	
 	s2u(buffer.c_str());	
@@ -444,15 +444,17 @@ void Search(string sKeyword, const string Message)
 		
 		printf("%s ", sMessage.c_str());//OK
 		
-		InsertData(	db_handler, 
-				sTableName, 
-				DateOutput(),  
-				sSenderNick.c_str(),
-				sSenderUser.c_str(), 
-				sCommand.c_str(), 
-				sReceiverNick.c_str(), 
-				sMessage.c_str());
-
+		if(bLogChat == true)
+		{
+			InsertData(	db_handler, 
+					sTableName,
+					DateOutput(),  
+					sSenderNick.c_str(),
+					sSenderUser.c_str(), 
+					sCommand.c_str(), 
+					sReceiverNick.c_str(), 
+					sMessage.c_str());
+		}
 	}
 }
 
@@ -485,6 +487,37 @@ void ShowLog()
 	printf("END LOG \r\n\r\n");
 }
 
+//Frag ob der Chat geloggt werden soll
+void AskLogging()
+{
+	char sAnswer[4];
+	for(bool bLogLoop = true; bLogLoop == true;)
+	{
+		printf("Do you want to log the Channel?\r\n");
+		printf("(Y)es / (N)o?\r\n");
+		scanf("%s", sAnswer);
+		fflush(stdin);
+		if(YesNoCheck().YesCheck(sAnswer))
+		{
+			bLogLoop = false;
+			bLogChat = true;
+			printf("The Chat is now being logged\r\n");
+		}
+		else if(YesNoCheck().NoCheck(sAnswer))
+		{
+			bLogLoop = false;
+			bLogChat = false;
+			printf("The Chat is not being logged\r\n");
+		}
+		else
+		{
+			bLogLoop = true;
+			bLogChat = false;
+			printf("Please only answere with (Y)es or (N)o\r\n");
+		}
+	}
+}
+
 //CHAT Loggen
 void StartChatLogging()
 {
@@ -492,17 +525,17 @@ void StartChatLogging()
 	{
 		string buffer;
 		string sChannel;
-		sChannel = sChannelName;
+		sChannel = cChannelName;
 		buffer = "Start logging Channel: " + sChannel;
-	
-		InsertData(	db_handler, 
-				sTableName, 
-				DateOutput(), 
-				sBotName,
-				sUserName,
-				"-", 
-				"-",  
-				buffer );
+
+		InsertData(	db_handler,
+				sTableName,
+				DateOutput(),
+				cBotName,
+				cUserName,
+				"-",
+				"-",
+				buffer);
 	}
 }
 
@@ -535,8 +568,14 @@ int main()
 	//Sets the configs per user input
 	SetData();
 
-	sqlite3_open(DATABSE_FILE, &db_handler);
-	CreateTable(db_handler, sTableName);
+	//Ask the user if he wants to log the channel
+	AskLogging();
+
+	if(bLogChat == true)
+	{
+		sqlite3_open(DATABSE_FILE, &db_handler);
+		CreateTable(db_handler, sTableName);
+	}
 
 	//Verbindung herstellen
 	IRC_Connect();
@@ -550,8 +589,11 @@ int main()
 	//Channel Loggen
 	StartChatLogging();
 
-	//Log ausgeben
-	ShowLog();
+	if(bLogChat == true)
+	{
+		//Log ausgeben
+		ShowLog();
+	}
 	
 	for(;;)
 	{
