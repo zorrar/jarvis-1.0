@@ -23,7 +23,7 @@ using namespace std;
 
 //Bot Settings
 const unsigned int iMaxLine = 1024;
-char cHost[256] = "localhost";//"PA.EnterTheGame.Com";
+char cHost[256] = "localhost";
 int iPort = 6667;
 char cBotName[256] = "Jarvis";
 char cUserName[256] = "Stark";
@@ -216,13 +216,13 @@ void IRC_Disconnect()
 		//Windows-SOcket freigeben
 		closesocket(sockfd);
 		WSACleanup();
-		printf("Disconnected");
+		printf("Disconnected\r\n");
 		exit(1);
 	}
 	#else
 	{
 		close(sockfd);
-		printf("Disconnected");
+		printf("Disconnected\r\n");
 		exit(1);
 	}
 	#endif
@@ -265,7 +265,7 @@ void IRC_Connect()
 	sin.sin_port = htons(iPort);
 	memset(&(sin.sin_zero), 0, 8*sizeof(char));
 
-	printf("\r\n%i\r\n", sockfd);
+	//printf("\r\n%i\r\n", sockfd);
 	if(connect(sockfd, (sockaddr*) &sin, sizeof(sin)) == -1)
 	{
 		printf("\r\n%i\r\n", sockfd);
@@ -382,36 +382,90 @@ string DateOutput()
 	return stime.c_str();
 }
 
+//Prints the ChatLog
+void ShowLog(string sNick)
+{
+	printf("\r\n\r\nSHOW LOG TEST\r\n\r\n");
+	string sChannelName = cChannelName;
+	string sBuffer;
+	int iLogMessage;
+	
+	iLogMessage = GetNumberEntrys(db_handler, sTableName);
+	printf("%i\r\n", iLogMessage);
+	
+
+	//SEND LOG TO CHENNEL
+	sBuffer = "PRIVMSG #" + sChannelName + " :CURRENT LOG: \r\n";
+	s2u(sBuffer.c_str());
+
+
+	for(int iCounter = 1; iCounter < iLogMessage; iCounter++)
+	{
+		string sData = "ERROR";
+		sData = PrintData(db_handler, sTableName, iCounter);
+
+
+		sBuffer = "PRIVMSG #" + sChannelName + " :" + sData + "\r\n";
+		printf("%s", sBuffer.c_str());
+		s2u(sBuffer.c_str());
+	}
+
+	sBuffer = "PRIVMSG #" + sChannelName + " :END LOG \r\n";
+	s2u(sBuffer.c_str());
+
+}
+
 //BOT Funktionen
 void BotFunctions(string sSearch, string sMessage, string sNick)
 {
-	/////HIER MORGEN WEITER ARBEITEN!
+	string sChannelName = cChannelName;
 	int iKeywordFinder;
 	iKeywordFinder = sMessage.find(sSearch.c_str());
-	//printf("%i\r\n" ,iKeywordFinder);
+
 	if(iKeywordFinder != -1 && sMessage.compare(iKeywordFinder, 7, "BOTNAME") == 0)
 	{
 		string sBuffer;
-		sBuffer = "PRIVMSG zorrar :HELLO Zorrar HERE I AM!!!\r\n\r\n";//" + sNick + "
+		sBuffer = "PRIVMSG " + sNick + " :HELLO " + sNick + " HERE I AM!!!\r\n\r\n";
 		s2u(sBuffer.c_str());
 
-		sBuffer = "PRIVMSG #ircbottesting :HELLO CHANNEL HERE I AM!!!\r\n\r\n";
-		// I AM " + cBotName + " A IRCBOT!\r\n
+		sBuffer = "PRIVMSG #" + sChannelName + " :HELLO CHANNEL HERE I AM!!!\r\n\r\n";
 		s2u(sBuffer.c_str());
 	}
 	
 	if(iKeywordFinder != -1 && sMessage.compare(iKeywordFinder, 8, "LASTSEEN") == 0)
 	{
-		printf("LAST SEEN USER TEST");
-		////SHOW THE LAST SEEN USER!!!
-		string sBuffer;
-		sBuffer = "PRIVMSG zorrar :LAST SEEN USER: XXX!!!\r\n\r\n";//" + sNick + "
-		s2u(sBuffer.c_str());
+		if(bLogChat == true)
+		{
+			string sSelectedData;
+			sSelectedData = PrintSelectedData(db_handler, sTableName);
 
-		sBuffer = "PRIVMSG #ircbottesting :LAST SEEN USER: XXX!!!\r\n\r\n";
-		// I AM " + cBotName + " A IRCBOT!\r\n
-		s2u(sBuffer.c_str());
+			string sBuffer;
+
+
+			sBuffer = "PRIVMSG #" + sChannelName + " :LAST LOGGED USER\r\n";
+			s2u(sBuffer.c_str());
+
+			sBuffer = "PRIVMSG #" + sChannelName + " :" + sSelectedData + "\r\n";
+			s2u(sBuffer.c_str());
+
+		}
+		else
+		{
+			s2u("This function is only usable if you enabled Logging on startup.\r\nPlease restart the Bot and Enable Logging if you want to use this function\r\n");
+		}
 	}
+
+	if(iKeywordFinder != -1 && sMessage.compare(iKeywordFinder, 7, "SHOWLOG") == 0)
+	{
+		ShowLog(sNick);
+	}
+
+	if(iKeywordFinder != -1 && sMessage.compare(iKeywordFinder, 7, "BOTQUIT") == 0)
+	{
+		IRC_Disconnect();
+		exit(1);
+	}
+
 }
 
 //Filter Messages for Keywards
@@ -489,6 +543,8 @@ void Search(string sKeyword, const string Message)
 		}
 		
 		BotFunctions("BOTNAME",sMessage, sSenderNick);
+		BotFunctions("SHOWLOG",sMessage, sSenderNick);
+		BotFunctions("BOTQUIT",sMessage, sSenderNick);
 		BotFunctions("LASTSEEN",sMessage, sSenderNick);
 	}
 }
@@ -512,14 +568,6 @@ void GetMSG(const string &buffer)
 
 	sKeyword = "NOTICE";
 	Search(sKeyword, buffer);
-}
-
-//Prints the ChatLog
-void ShowLog()
-{
-	printf("LOG: \r\n");
-	PrintData(db_handler, sTableName);
-	printf("END LOG \r\n\r\n");
 }
 
 //Frag ob der Chat geloggt werden soll
@@ -616,14 +664,7 @@ int main()
 	ChannelConnect();
 	
 	//Channel Loggen
-	StartChatLogging();
-
-	if(bLogChat == true)
-	{
-		//Log ausgeben
-		ShowLog();
-	}
-	
+	StartChatLogging();	
 	
 
 	for(;;)
