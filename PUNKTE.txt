@@ -1,0 +1,59 @@
+BASISPUNKTE : DONE(100%)
+-Das IRC Protokoll kann manuell als Socket Client implementiert werden oder es kann eine vorhandene IRC Bibliothek verwendet werden. (z.B. libircclient)
+	-> DONE: IMPLEMENTIER ALS SOCKETCLIENT MIT C++
+
+-Der Bot soll sich zumindest auf einem Server anmelden können.
+	-> DONE: STANDART SERVER "LOCALHOST" BEIM START ABER ÄNDERBAR
+
+-Der Bot soll sich zumindest in einem Channel anmelden können.
+	-> DONE: STANDART CHANNEL"IRCBOTTESTING" BEIM START ABER ÄNDERBAR
+
+-Servername und Channel müssen über die Kommandozeile als Parameter übergeben werden können.
+	-> DONE
+
+-Der Bot erscheint im Channel mit einem Namen der ebenfalls konfigurierbar ist.
+	-> DONE
+
+-Der Bot hat minimale Steuerungsmöglichkeiten, siehe unten.
+	-> DONE
+
+
+
+Steuerung des Bots
+-Der Bot reagiert auf "Botname: xxx"
+	-> DONE: BEI EINGABE VON "BOTNAME" MELDET SICH DER BOT
+
+-An- und ausschalten eines Logging (Logging über SQLite DB)
+	-> DONE: BEIM START AKTIVIER UND DEAKTIVIERBAR
+
+-Abfrage: "Last seen BENUTZENAME"
+	-> DONE: BEI EINGABE VON "LASTSEEN" GIBT DER BOT DEN LETZTEN USER UND SEINE AKTION AUS DER DATENBANK AUS
+
+-Ausgabe des Logs in den Chat
+	-> DONE: BEI EINGABE VON "SHOWLOG" GIBT DER BOT DEN GESAMMTEN LOG AUS DER SQL DATEI AUS
+
+
+
+
+
+Zusatz Featchers: DONE(40/50 Punkten)
+
+Konfigurationsdatei erstellen
+max. 20 Punkte
+	-> DONE: LÄDE & SICHERT CONFIGS AUS/IN CONFIG.TXT UND ERSTELLT DIESE FALLS NOCH NICHT VORHANDEN
+
+
+Eigene Implementierung einer IRC Bibliothek
+max. 10 Punkte
+	-> DONE: jarvis.ib.h
+
+Intelligentes Herunterladen von Abhängigkeiten
+max. 10 Punkte
+
+IRC Channel Features
+5 Punkte
+	-> DONE: BEI EINGABE VON "BOTQUIT" DISCONNECTED SICH DER BOT UND BEENDET SICH AUF DEM HOST SELBER
+
+Veröffentlichen
+5 Punkte
+	-> DER BOT WIRD NACH DER BEWERTUNG VERÖFFENTLICHT
