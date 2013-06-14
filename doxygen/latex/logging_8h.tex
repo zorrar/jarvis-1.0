@@ -1,0 +1,91 @@
+\hypertarget{logging_8h}{\section{C\-:/\-Users/\-Zorrar/\-Desktop/\-Jarvis/logging.h File Reference}
+\label{logging_8h}\index{C\-:/\-Users/\-Zorrar/\-Desktop/\-Jarvis/logging.\-h@{C\-:/\-Users/\-Zorrar/\-Desktop/\-Jarvis/logging.\-h}}
+}
+{\ttfamily \#include $<$sqlite3.\-h$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$list$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{logging_8h_acf5c2e7671e879cbad6a1da1ed460eef}{D\-A\-T\-A\-B\-S\-E\-\_\-\-F\-I\-L\-E}~\char`\"{}Jarvis\-\_\-db.\-sql\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{logging_8h_aa9c9d8f783f3b54abe467d75797600c2}{Create\-Table} (sqlite3 $\ast$sq3\-Data\-Base, string \hyperlink{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{s\-Table\-Name})
+\item 
+void \hyperlink{logging_8h_ac5224780d8f6946768daa22af2fc75b4}{Insert\-Data} (sqlite3 $\ast$sq3\-Data\-Base, string \hyperlink{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{s\-Table\-Name}, string s\-Date, string s\-Sender\-Nick, string s\-Sender\-User, string s\-Command, string s\-Receiver\-Nick, string s\-Message)
+\item 
+string \hyperlink{logging_8h_a89f894a2c1889605d548ea16d9dd0f0f}{Print\-Data} (sqlite3 $\ast$sq3\-Data\-Base, string \hyperlink{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{s\-Table\-Name}, int i\-Entry)
+\item 
+int \hyperlink{logging_8h_a05194a61de561f7579d437ad5c48e5c4}{Get\-Number\-Entrys} (sqlite3 $\ast$sq3\-Data\-Base, string \hyperlink{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{s\-Table\-Name})
+\item 
+string \hyperlink{logging_8h_a71389d388482fc3a37f4411781235e1f}{Print\-Selected\-Data} (sqlite3 $\ast$sq3\-Data\-Base, string \hyperlink{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{s\-Table\-Name})
+\item 
+string \hyperlink{logging_8h_a6e9fcb554372615bca269c6ee88f78bf}{Print\-Selected\-Data2} (sqlite3 $\ast$sq3\-Data\-Base, string \hyperlink{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{s\-Table\-Name}, int i\-Number)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{logging_8h_acf5c2e7671e879cbad6a1da1ed460eef}{\index{logging.\-h@{logging.\-h}!D\-A\-T\-A\-B\-S\-E\-\_\-\-F\-I\-L\-E@{D\-A\-T\-A\-B\-S\-E\-\_\-\-F\-I\-L\-E}}
+\index{D\-A\-T\-A\-B\-S\-E\-\_\-\-F\-I\-L\-E@{D\-A\-T\-A\-B\-S\-E\-\_\-\-F\-I\-L\-E}!logging.h@{logging.\-h}}
+\subsubsection[{D\-A\-T\-A\-B\-S\-E\-\_\-\-F\-I\-L\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\-A\-T\-A\-B\-S\-E\-\_\-\-F\-I\-L\-E~\char`\"{}Jarvis\-\_\-db.\-sql\char`\"{}}}\label{logging_8h_acf5c2e7671e879cbad6a1da1ed460eef}
+
+
+\subsection{Function Documentation}
+\hypertarget{logging_8h_aa9c9d8f783f3b54abe467d75797600c2}{\index{logging.\-h@{logging.\-h}!Create\-Table@{Create\-Table}}
+\index{Create\-Table@{Create\-Table}!logging.h@{logging.\-h}}
+\subsubsection[{Create\-Table}]{\setlength{\rightskip}{0pt plus 5cm}void Create\-Table (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{sq3\-Data\-Base, }
+\item[{string}]{s\-Table\-Name}
+\end{DoxyParamCaption}
+)}}\label{logging_8h_aa9c9d8f783f3b54abe467d75797600c2}
+\hypertarget{logging_8h_a05194a61de561f7579d437ad5c48e5c4}{\index{logging.\-h@{logging.\-h}!Get\-Number\-Entrys@{Get\-Number\-Entrys}}
+\index{Get\-Number\-Entrys@{Get\-Number\-Entrys}!logging.h@{logging.\-h}}
+\subsubsection[{Get\-Number\-Entrys}]{\setlength{\rightskip}{0pt plus 5cm}int Get\-Number\-Entrys (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{sq3\-Data\-Base, }
+\item[{string}]{s\-Table\-Name}
+\end{DoxyParamCaption}
+)}}\label{logging_8h_a05194a61de561f7579d437ad5c48e5c4}
+\hypertarget{logging_8h_ac5224780d8f6946768daa22af2fc75b4}{\index{logging.\-h@{logging.\-h}!Insert\-Data@{Insert\-Data}}
+\index{Insert\-Data@{Insert\-Data}!logging.h@{logging.\-h}}
+\subsubsection[{Insert\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void Insert\-Data (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{sq3\-Data\-Base, }
+\item[{string}]{s\-Table\-Name, }
+\item[{string}]{s\-Date, }
+\item[{string}]{s\-Sender\-Nick, }
+\item[{string}]{s\-Sender\-User, }
+\item[{string}]{s\-Command, }
+\item[{string}]{s\-Receiver\-Nick, }
+\item[{string}]{s\-Message}
+\end{DoxyParamCaption}
+)}}\label{logging_8h_ac5224780d8f6946768daa22af2fc75b4}
+\hypertarget{logging_8h_a89f894a2c1889605d548ea16d9dd0f0f}{\index{logging.\-h@{logging.\-h}!Print\-Data@{Print\-Data}}
+\index{Print\-Data@{Print\-Data}!logging.h@{logging.\-h}}
+\subsubsection[{Print\-Data}]{\setlength{\rightskip}{0pt plus 5cm}string Print\-Data (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{sq3\-Data\-Base, }
+\item[{string}]{s\-Table\-Name, }
+\item[{int}]{i\-Entry}
+\end{DoxyParamCaption}
+)}}\label{logging_8h_a89f894a2c1889605d548ea16d9dd0f0f}
+\hypertarget{logging_8h_a71389d388482fc3a37f4411781235e1f}{\index{logging.\-h@{logging.\-h}!Print\-Selected\-Data@{Print\-Selected\-Data}}
+\index{Print\-Selected\-Data@{Print\-Selected\-Data}!logging.h@{logging.\-h}}
+\subsubsection[{Print\-Selected\-Data}]{\setlength{\rightskip}{0pt plus 5cm}string Print\-Selected\-Data (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{sq3\-Data\-Base, }
+\item[{string}]{s\-Table\-Name}
+\end{DoxyParamCaption}
+)}}\label{logging_8h_a71389d388482fc3a37f4411781235e1f}
+\hypertarget{logging_8h_a6e9fcb554372615bca269c6ee88f78bf}{\index{logging.\-h@{logging.\-h}!Print\-Selected\-Data2@{Print\-Selected\-Data2}}
+\index{Print\-Selected\-Data2@{Print\-Selected\-Data2}!logging.h@{logging.\-h}}
+\subsubsection[{Print\-Selected\-Data2}]{\setlength{\rightskip}{0pt plus 5cm}string Print\-Selected\-Data2 (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{sq3\-Data\-Base, }
+\item[{string}]{s\-Table\-Name, }
+\item[{int}]{i\-Number}
+\end{DoxyParamCaption}
+)}}\label{logging_8h_a6e9fcb554372615bca269c6ee88f78bf}

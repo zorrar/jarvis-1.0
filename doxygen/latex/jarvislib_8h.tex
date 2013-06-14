@@ -1,0 +1,260 @@
+\hypertarget{jarvislib_8h}{\section{C\-:/\-Users/\-Zorrar/\-Desktop/\-Jarvis/jarvislib.h File Reference}
+\label{jarvislib_8h}\index{C\-:/\-Users/\-Zorrar/\-Desktop/\-Jarvis/jarvislib.\-h@{C\-:/\-Users/\-Zorrar/\-Desktop/\-Jarvis/jarvislib.\-h}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$cstdio$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$time.\-h$>$}\\*
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}logging.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$sys/socket.\-h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\-h$>$}\\*
+{\ttfamily \#include $<$arpa/inet.\-h$>$}\\*
+{\ttfamily \#include $<$netdb.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_yes_no_check}{Yes\-No\-Check}
+\item 
+struct \hyperlink{struct_info_m_s_g}{Info\-M\-S\-G}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{jarvislib_8h_ad21722396dfdc24d3d8de237307f3a30}{is\-\_\-empty} (ifstream \&p\-File)
+\item 
+void \hyperlink{jarvislib_8h_a885d8b5d1320befcfed0ba16de280117}{Load\-Data} ()
+\item 
+void \hyperlink{jarvislib_8h_afb707179a2ceeebf05387778b0aedeb5}{Show\-Data} ()
+\item 
+void \hyperlink{jarvislib_8h_a9c2ae48d7b39c544cfa4e59c22e718a1}{Set\-Data} ()
+\item 
+void \hyperlink{jarvislib_8h_a68bb1ce0ce1b79eadd4ffcd7280d4abb}{Save\-Data} ()
+\item 
+void \hyperlink{jarvislib_8h_af162c763af3b5730c9749d9680e8b168}{I\-R\-C\-\_\-\-Disconnect} ()
+\item 
+void \hyperlink{jarvislib_8h_af5589a8eaa124360c08cd7375d5412aa}{I\-R\-C\-\_\-\-Connect} ()
+\item 
+void \hyperlink{jarvislib_8h_a4201cef228d3a7e8b462df39a9226d9d}{s2u} (const char $\ast$msg)
+\item 
+void \hyperlink{jarvislib_8h_a8ecd28c0cbd537410f23b868192afbf9}{Channel\-Connect} ()
+\item 
+void \hyperlink{jarvislib_8h_a06e150d7beff75521e6b82fe1d88cd12}{I\-R\-C\-\_\-\-Identify} ()
+\item 
+void \hyperlink{jarvislib_8h_aaccfa2b076b9f68b14f5a93a3d8c5265}{I\-R\-C\-S\-C\-T} (const string \&buffer)
+\item 
+string \hyperlink{jarvislib_8h_a2c6de3d77f62183295656fcff8dba068}{Date\-Output} ()
+\item 
+void \hyperlink{jarvislib_8h_a4692b0eaa207b32af0b99bc2d48d30c8}{Show\-Log} (string s\-Nick)
+\item 
+void \hyperlink{jarvislib_8h_ad826ed2f3dd0adaa4135460e6b0dd635}{Bot\-Functions} (string s\-Search, string s\-Message, string s\-Nick)
+\item 
+void \hyperlink{jarvislib_8h_ae6b9bbf1cc1bda222274776702286809}{Search} (string s\-Keyword, const string Message)
+\item 
+void \hyperlink{jarvislib_8h_a7f300a15e9ac45d5af6fac6609b2685a}{Get\-M\-S\-G} (const string \&buffer)
+\item 
+void \hyperlink{jarvislib_8h_acb8e64d111e04185bcb3551935b75b85}{Ask\-Logging} ()
+\item 
+void \hyperlink{jarvislib_8h_af3ac3484501bbfb1195851240c096552}{Start\-Chat\-Logging} ()
+\item 
+void \hyperlink{jarvislib_8h_a6ed587c61178f079e8d3a9517a60c433}{irc\-\_\-parse} (string buffer)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const unsigned int \hyperlink{jarvislib_8h_ae508f723db3c7b4cb127937a74f9c9de}{i\-Max\-Line} = 1024
+\item 
+char \hyperlink{jarvislib_8h_ae1590f26b869ffaeaeec7e6150b8af81}{c\-Host} \mbox{[}256\mbox{]} = \char`\"{}localhost\char`\"{}
+\item 
+int \hyperlink{jarvislib_8h_a5a21f35230dd7ae3c594ff1ad4aa9f99}{i\-Port} = 6667
+\item 
+char \hyperlink{jarvislib_8h_a7265b853710664df0ed970979b6f69df}{c\-Bot\-Name} \mbox{[}256\mbox{]} = \char`\"{}Jarvis\char`\"{}
+\item 
+char \hyperlink{jarvislib_8h_aa52eae991ba190b80e2639899f7e1d7b}{c\-User\-Name} \mbox{[}256\mbox{]} = \char`\"{}Stark\char`\"{}
+\item 
+char \hyperlink{jarvislib_8h_a1e5dafe0c5c1ed196220b6d8c430439b}{c\-Channel\-Name} \mbox{[}256\mbox{]} = \char`\"{}ircbottesting\char`\"{}
+\item 
+bool \hyperlink{jarvislib_8h_a1fb352f1c77fbfef82621b3a6fcd6018}{b\-Log\-Chat} = true
+\item 
+string \hyperlink{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{s\-Table\-Name} = \char`\"{}Log\char`\"{}
+\item 
+sqlite3 $\ast$ \hyperlink{jarvislib_8h_a6eafda77fe7cdb7a9a5d8dafd3a9879b}{db\-\_\-handler}
+\item 
+int \hyperlink{jarvislib_8h_ad2c8fb3df3a737e0685e902870a611d2}{sockfd}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{jarvislib_8h_acb8e64d111e04185bcb3551935b75b85}{\index{jarvislib.\-h@{jarvislib.\-h}!Ask\-Logging@{Ask\-Logging}}
+\index{Ask\-Logging@{Ask\-Logging}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Ask\-Logging}]{\setlength{\rightskip}{0pt plus 5cm}void Ask\-Logging (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_acb8e64d111e04185bcb3551935b75b85}
+\hypertarget{jarvislib_8h_ad826ed2f3dd0adaa4135460e6b0dd635}{\index{jarvislib.\-h@{jarvislib.\-h}!Bot\-Functions@{Bot\-Functions}}
+\index{Bot\-Functions@{Bot\-Functions}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Bot\-Functions}]{\setlength{\rightskip}{0pt plus 5cm}void Bot\-Functions (
+\begin{DoxyParamCaption}
+\item[{string}]{s\-Search, }
+\item[{string}]{s\-Message, }
+\item[{string}]{s\-Nick}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_ad826ed2f3dd0adaa4135460e6b0dd635}
+\hypertarget{jarvislib_8h_a8ecd28c0cbd537410f23b868192afbf9}{\index{jarvislib.\-h@{jarvislib.\-h}!Channel\-Connect@{Channel\-Connect}}
+\index{Channel\-Connect@{Channel\-Connect}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Channel\-Connect}]{\setlength{\rightskip}{0pt plus 5cm}void Channel\-Connect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a8ecd28c0cbd537410f23b868192afbf9}
+\hypertarget{jarvislib_8h_a2c6de3d77f62183295656fcff8dba068}{\index{jarvislib.\-h@{jarvislib.\-h}!Date\-Output@{Date\-Output}}
+\index{Date\-Output@{Date\-Output}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Date\-Output}]{\setlength{\rightskip}{0pt plus 5cm}string Date\-Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a2c6de3d77f62183295656fcff8dba068}
+\hypertarget{jarvislib_8h_a7f300a15e9ac45d5af6fac6609b2685a}{\index{jarvislib.\-h@{jarvislib.\-h}!Get\-M\-S\-G@{Get\-M\-S\-G}}
+\index{Get\-M\-S\-G@{Get\-M\-S\-G}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Get\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}void Get\-M\-S\-G (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{buffer}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a7f300a15e9ac45d5af6fac6609b2685a}
+\hypertarget{jarvislib_8h_af5589a8eaa124360c08cd7375d5412aa}{\index{jarvislib.\-h@{jarvislib.\-h}!I\-R\-C\-\_\-\-Connect@{I\-R\-C\-\_\-\-Connect}}
+\index{I\-R\-C\-\_\-\-Connect@{I\-R\-C\-\_\-\-Connect}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{I\-R\-C\-\_\-\-Connect}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R\-C\-\_\-\-Connect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_af5589a8eaa124360c08cd7375d5412aa}
+\hypertarget{jarvislib_8h_af162c763af3b5730c9749d9680e8b168}{\index{jarvislib.\-h@{jarvislib.\-h}!I\-R\-C\-\_\-\-Disconnect@{I\-R\-C\-\_\-\-Disconnect}}
+\index{I\-R\-C\-\_\-\-Disconnect@{I\-R\-C\-\_\-\-Disconnect}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{I\-R\-C\-\_\-\-Disconnect}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R\-C\-\_\-\-Disconnect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_af162c763af3b5730c9749d9680e8b168}
+\hypertarget{jarvislib_8h_a06e150d7beff75521e6b82fe1d88cd12}{\index{jarvislib.\-h@{jarvislib.\-h}!I\-R\-C\-\_\-\-Identify@{I\-R\-C\-\_\-\-Identify}}
+\index{I\-R\-C\-\_\-\-Identify@{I\-R\-C\-\_\-\-Identify}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{I\-R\-C\-\_\-\-Identify}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R\-C\-\_\-\-Identify (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a06e150d7beff75521e6b82fe1d88cd12}
+\hypertarget{jarvislib_8h_a6ed587c61178f079e8d3a9517a60c433}{\index{jarvislib.\-h@{jarvislib.\-h}!irc\-\_\-parse@{irc\-\_\-parse}}
+\index{irc\-\_\-parse@{irc\-\_\-parse}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{irc\-\_\-parse}]{\setlength{\rightskip}{0pt plus 5cm}void irc\-\_\-parse (
+\begin{DoxyParamCaption}
+\item[{string}]{buffer}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a6ed587c61178f079e8d3a9517a60c433}
+\hypertarget{jarvislib_8h_aaccfa2b076b9f68b14f5a93a3d8c5265}{\index{jarvislib.\-h@{jarvislib.\-h}!I\-R\-C\-S\-C\-T@{I\-R\-C\-S\-C\-T}}
+\index{I\-R\-C\-S\-C\-T@{I\-R\-C\-S\-C\-T}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{I\-R\-C\-S\-C\-T}]{\setlength{\rightskip}{0pt plus 5cm}void I\-R\-C\-S\-C\-T (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{buffer}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_aaccfa2b076b9f68b14f5a93a3d8c5265}
+\hypertarget{jarvislib_8h_ad21722396dfdc24d3d8de237307f3a30}{\index{jarvislib.\-h@{jarvislib.\-h}!is\-\_\-empty@{is\-\_\-empty}}
+\index{is\-\_\-empty@{is\-\_\-empty}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{is\-\_\-empty}]{\setlength{\rightskip}{0pt plus 5cm}bool is\-\_\-empty (
+\begin{DoxyParamCaption}
+\item[{ifstream \&}]{p\-File}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_ad21722396dfdc24d3d8de237307f3a30}
+\hypertarget{jarvislib_8h_a885d8b5d1320befcfed0ba16de280117}{\index{jarvislib.\-h@{jarvislib.\-h}!Load\-Data@{Load\-Data}}
+\index{Load\-Data@{Load\-Data}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Load\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void Load\-Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a885d8b5d1320befcfed0ba16de280117}
+\hypertarget{jarvislib_8h_a4201cef228d3a7e8b462df39a9226d9d}{\index{jarvislib.\-h@{jarvislib.\-h}!s2u@{s2u}}
+\index{s2u@{s2u}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{s2u}]{\setlength{\rightskip}{0pt plus 5cm}void s2u (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{msg}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a4201cef228d3a7e8b462df39a9226d9d}
+\hypertarget{jarvislib_8h_a68bb1ce0ce1b79eadd4ffcd7280d4abb}{\index{jarvislib.\-h@{jarvislib.\-h}!Save\-Data@{Save\-Data}}
+\index{Save\-Data@{Save\-Data}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Save\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void Save\-Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a68bb1ce0ce1b79eadd4ffcd7280d4abb}
+\hypertarget{jarvislib_8h_ae6b9bbf1cc1bda222274776702286809}{\index{jarvislib.\-h@{jarvislib.\-h}!Search@{Search}}
+\index{Search@{Search}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Search}]{\setlength{\rightskip}{0pt plus 5cm}void Search (
+\begin{DoxyParamCaption}
+\item[{string}]{s\-Keyword, }
+\item[{const string}]{Message}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_ae6b9bbf1cc1bda222274776702286809}
+\hypertarget{jarvislib_8h_a9c2ae48d7b39c544cfa4e59c22e718a1}{\index{jarvislib.\-h@{jarvislib.\-h}!Set\-Data@{Set\-Data}}
+\index{Set\-Data@{Set\-Data}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Set\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void Set\-Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a9c2ae48d7b39c544cfa4e59c22e718a1}
+\hypertarget{jarvislib_8h_afb707179a2ceeebf05387778b0aedeb5}{\index{jarvislib.\-h@{jarvislib.\-h}!Show\-Data@{Show\-Data}}
+\index{Show\-Data@{Show\-Data}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Show\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void Show\-Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_afb707179a2ceeebf05387778b0aedeb5}
+\hypertarget{jarvislib_8h_a4692b0eaa207b32af0b99bc2d48d30c8}{\index{jarvislib.\-h@{jarvislib.\-h}!Show\-Log@{Show\-Log}}
+\index{Show\-Log@{Show\-Log}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Show\-Log}]{\setlength{\rightskip}{0pt plus 5cm}void Show\-Log (
+\begin{DoxyParamCaption}
+\item[{string}]{s\-Nick}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_a4692b0eaa207b32af0b99bc2d48d30c8}
+\hypertarget{jarvislib_8h_af3ac3484501bbfb1195851240c096552}{\index{jarvislib.\-h@{jarvislib.\-h}!Start\-Chat\-Logging@{Start\-Chat\-Logging}}
+\index{Start\-Chat\-Logging@{Start\-Chat\-Logging}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{Start\-Chat\-Logging}]{\setlength{\rightskip}{0pt plus 5cm}void Start\-Chat\-Logging (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{jarvislib_8h_af3ac3484501bbfb1195851240c096552}
+
+
+\subsection{Variable Documentation}
+\hypertarget{jarvislib_8h_a1fb352f1c77fbfef82621b3a6fcd6018}{\index{jarvislib.\-h@{jarvislib.\-h}!b\-Log\-Chat@{b\-Log\-Chat}}
+\index{b\-Log\-Chat@{b\-Log\-Chat}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{b\-Log\-Chat}]{\setlength{\rightskip}{0pt plus 5cm}bool b\-Log\-Chat = true}}\label{jarvislib_8h_a1fb352f1c77fbfef82621b3a6fcd6018}
+\hypertarget{jarvislib_8h_a7265b853710664df0ed970979b6f69df}{\index{jarvislib.\-h@{jarvislib.\-h}!c\-Bot\-Name@{c\-Bot\-Name}}
+\index{c\-Bot\-Name@{c\-Bot\-Name}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{c\-Bot\-Name}]{\setlength{\rightskip}{0pt plus 5cm}char c\-Bot\-Name\mbox{[}256\mbox{]} = \char`\"{}Jarvis\char`\"{}}}\label{jarvislib_8h_a7265b853710664df0ed970979b6f69df}
+\hypertarget{jarvislib_8h_a1e5dafe0c5c1ed196220b6d8c430439b}{\index{jarvislib.\-h@{jarvislib.\-h}!c\-Channel\-Name@{c\-Channel\-Name}}
+\index{c\-Channel\-Name@{c\-Channel\-Name}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{c\-Channel\-Name}]{\setlength{\rightskip}{0pt plus 5cm}char c\-Channel\-Name\mbox{[}256\mbox{]} = \char`\"{}ircbottesting\char`\"{}}}\label{jarvislib_8h_a1e5dafe0c5c1ed196220b6d8c430439b}
+\hypertarget{jarvislib_8h_ae1590f26b869ffaeaeec7e6150b8af81}{\index{jarvislib.\-h@{jarvislib.\-h}!c\-Host@{c\-Host}}
+\index{c\-Host@{c\-Host}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{c\-Host}]{\setlength{\rightskip}{0pt plus 5cm}char c\-Host\mbox{[}256\mbox{]} = \char`\"{}localhost\char`\"{}}}\label{jarvislib_8h_ae1590f26b869ffaeaeec7e6150b8af81}
+\hypertarget{jarvislib_8h_aa52eae991ba190b80e2639899f7e1d7b}{\index{jarvislib.\-h@{jarvislib.\-h}!c\-User\-Name@{c\-User\-Name}}
+\index{c\-User\-Name@{c\-User\-Name}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{c\-User\-Name}]{\setlength{\rightskip}{0pt plus 5cm}char c\-User\-Name\mbox{[}256\mbox{]} = \char`\"{}Stark\char`\"{}}}\label{jarvislib_8h_aa52eae991ba190b80e2639899f7e1d7b}
+\hypertarget{jarvislib_8h_a6eafda77fe7cdb7a9a5d8dafd3a9879b}{\index{jarvislib.\-h@{jarvislib.\-h}!db\-\_\-handler@{db\-\_\-handler}}
+\index{db\-\_\-handler@{db\-\_\-handler}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{db\-\_\-handler}]{\setlength{\rightskip}{0pt plus 5cm}sqlite3$\ast$ db\-\_\-handler}}\label{jarvislib_8h_a6eafda77fe7cdb7a9a5d8dafd3a9879b}
+\hypertarget{jarvislib_8h_ae508f723db3c7b4cb127937a74f9c9de}{\index{jarvislib.\-h@{jarvislib.\-h}!i\-Max\-Line@{i\-Max\-Line}}
+\index{i\-Max\-Line@{i\-Max\-Line}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{i\-Max\-Line}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned int i\-Max\-Line = 1024}}\label{jarvislib_8h_ae508f723db3c7b4cb127937a74f9c9de}
+\hypertarget{jarvislib_8h_a5a21f35230dd7ae3c594ff1ad4aa9f99}{\index{jarvislib.\-h@{jarvislib.\-h}!i\-Port@{i\-Port}}
+\index{i\-Port@{i\-Port}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{i\-Port}]{\setlength{\rightskip}{0pt plus 5cm}int i\-Port = 6667}}\label{jarvislib_8h_a5a21f35230dd7ae3c594ff1ad4aa9f99}
+\hypertarget{jarvislib_8h_ad2c8fb3df3a737e0685e902870a611d2}{\index{jarvislib.\-h@{jarvislib.\-h}!sockfd@{sockfd}}
+\index{sockfd@{sockfd}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{sockfd}]{\setlength{\rightskip}{0pt plus 5cm}int sockfd}}\label{jarvislib_8h_ad2c8fb3df3a737e0685e902870a611d2}
+\hypertarget{jarvislib_8h_a714ce164383aca66b724a949306d18bd}{\index{jarvislib.\-h@{jarvislib.\-h}!s\-Table\-Name@{s\-Table\-Name}}
+\index{s\-Table\-Name@{s\-Table\-Name}!jarvislib.h@{jarvislib.\-h}}
+\subsubsection[{s\-Table\-Name}]{\setlength{\rightskip}{0pt plus 5cm}string s\-Table\-Name = \char`\"{}Log\char`\"{}}}\label{jarvislib_8h_a714ce164383aca66b724a949306d18bd}
